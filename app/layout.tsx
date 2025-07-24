@@ -4,13 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState, createContext } from 'react';
 import { useRouter } from 'next/navigation';
-
-// Define a File type for better type safety
-export interface File {
-  name: string;
-  label: string;
-  content: string;
-}
+import { FilesContext, File } from './FilesContext';
 
 const initialFiles: File[] = [
   { name: 'index.ts', label: 'index.ts', content: `export const hello = () => {\n  console.log('Hello, world!');\n};` },
@@ -18,16 +12,6 @@ const initialFiles: File[] = [
   { name: 'readme.md', label: 'README.md', content: `# VS Code Mock\n\nThis is a mock README file for the VS Code-like UI demo.` },
   
 ];
-
-export const FilesContext = createContext<{
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  updateFileContent: (name: string, content: string) => void;
-}>({
-  files: initialFiles,
-  setFiles: () => {},
-  updateFileContent: () => {},
-});
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

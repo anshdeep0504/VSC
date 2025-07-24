@@ -1,6 +1,6 @@
 "use client";
 import React, { useContext, useEffect } from 'react';
-import { FilesContext } from '../../layout';
+import { FilesContext } from '../../FilesContext';
 
 export default function FilePage({ params }: { params: Promise<{ file: string }> }) {
   const resolvedParams = React.use(params);

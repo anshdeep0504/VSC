@@ -5,17 +5,28 @@ import { usePathname } from 'next/navigation';
 import React, { useState, createContext } from 'react';
 import { useRouter } from 'next/navigation';
 
-const initialFiles = [
+// Define a File type for better type safety
+export interface File {
+  name: string;
+  label: string;
+  content: string;
+}
+
+const initialFiles: File[] = [
   { name: 'index.ts', label: 'index.ts', content: `export const hello = () => {\n  console.log('Hello, world!');\n};` },
   { name: 'app.tsx', label: 'app.tsx', content: `import React from 'react';\n\nexport default function App() {\n  return <div>App Component</div>;\n}` },
   { name: 'readme.md', label: 'README.md', content: `# VS Code Mock\n\nThis is a mock README file for the VS Code-like UI demo.` },
-  { name: 'config.json', label: 'config.json', content: `{"name": "vs-code-mock",\n  "version": "1.0.0"}` },
+  
 ];
 
-export const FilesContext = createContext({
+export const FilesContext = createContext<{
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  updateFileContent: (name: string, content: string) => void;
+}>({
   files: initialFiles,
-  setFiles: (files: any) => {},
-  updateFileContent: (name: string, content: string) => {},
+  setFiles: () => {},
+  updateFileContent: () => {},
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

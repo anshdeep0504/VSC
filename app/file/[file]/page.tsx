@@ -5,26 +5,27 @@ import { FilesContext } from '../../layout';
 export default function FilePage({ params }: { params: Promise<{ file: string }> }) {
   const resolvedParams = React.use(params);
   const { files, setFiles, updateFileContent } = useContext(FilesContext);
-  if (!resolvedParams) return <div className="text-gray-400 p-8">Loading...</div>;
   // Case-insensitive file lookup
-  let file = files.find(f => f.name.toLowerCase() === resolvedParams.file.toLowerCase());
+  let file = files.find(f => f.name.toLowerCase() === resolvedParams?.file?.toLowerCase());
 
   // If file does not exist, create it in context on first render
   useEffect(() => {
-    if (!file && resolvedParams.file) {
+    if (resolvedParams && !file && resolvedParams.file) {
       setFiles([...files, { name: resolvedParams.file, label: resolvedParams.file, content: '' }]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resolvedParams.file, files.length]);
+  }, [resolvedParams?.file, files.length]);
 
   // Always get the latest file from context
-  file = files.find(f => f.name.toLowerCase() === resolvedParams.file.toLowerCase());
+  file = files.find(f => f.name.toLowerCase() === resolvedParams?.file?.toLowerCase());
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (file) {
       updateFileContent(file.name, e.target.value);
     }
   };
+
+  if (!resolvedParams) return <div className="text-gray-400 p-8">Loading...</div>;
 
   return (
     <div key={resolvedParams.file} className="w-full flex justify-center items-start py-8 px-2 min-h-[calc(100vh-2.5rem)]">
